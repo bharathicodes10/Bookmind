@@ -41,7 +41,7 @@ const Navbar = () => {
               </Link>
             );
           })}
-           <ClerkProvider>
+           
               <Show when="signed-out">
                 <SignInButton />
                 <SignUpButton />
@@ -49,8 +49,7 @@ const Navbar = () => {
               <Show when="signed-in">
                 <UserButton />
               </Show>  
-          <Navbar/>
-        </ClerkProvider>
+         
         </nav>
       </div>
     </header>
