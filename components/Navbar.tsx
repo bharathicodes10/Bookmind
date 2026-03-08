@@ -1,19 +1,27 @@
-'use client';
+"use client";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
-import { ClerkProvider, Show, SignInButton, SignUpButton, UserButton, useUser, useClerk } from "@clerk/nextjs";
+import {
+  ClerkProvider,
+  Show,
+  SignInButton,
+  SignUpButton,
+  UserButton,
+  useUser,
+  useClerk,
+} from "@clerk/nextjs";
 const navItems = [
   { label: "Library", href: "/" },
   { label: "Add New", href: "/books/new" },
 ];
 const Navbar = () => {
   const pathname = usePathname();
-  const { user }=useUser();
+  const { user } = useUser();
   return (
-    <header className="w-full fixed top-0 left-0 z-50 bg-('--bg-primary')">
+    <header className="w-full fixed top-0 left-0 z-50 bg-[var(--bg-primary)]">
       <div className="wrapper navbar-height py-4 flex items-center justify-between">
         <Link href="/" className="flex gap-0.5 items-center">
           <Image
@@ -27,7 +35,8 @@ const Navbar = () => {
         <nav className="w-fit flex gap-7.5 items-center">
           {navItems.map((item) => {
             const isActive =
-              pathname === item.href || pathname.startsWith(item.href);
+              pathname === item.href ||
+              (item.href !== "/" && pathname.startsWith(item.href));
 
             return (
               <Link
@@ -35,32 +44,29 @@ const Navbar = () => {
                 href={item.href}
                 className={cn(
                   "nav-link-base",
-                  isActive ? "nav-link-active":"text-black hover:opacity-70",
+                  isActive ? "nav-link-active" : "text-black hover:opacity-70",
                 )}
               >
                 {item.label}
               </Link>
             );
           })}
-           <div className="flex gap-7.5 items-center">
-
-              <Show when="signed-out">
-                <SignInButton />
-                <SignUpButton />
-              </Show>
-              <div className="nav-user-link">
-
+          <div className="flex gap-7.5 items-center">
+            <Show when="signed-out">
+              <SignInButton />
+              <SignUpButton />
+            </Show>
+            <div className="nav-user-link">
               <Show when="signed-in">
                 <UserButton />
-                {user?.firstName &&(
+                {user?.firstName && (
                   <Link href="/subscriptions" className="nav-user-name">
                     {user.firstName}
                   </Link>
                 )}
-              </Show>  
-              </div>
-           </div>
-         
+              </Show>
+            </div>
+          </div>
         </nav>
       </div>
     </header>
