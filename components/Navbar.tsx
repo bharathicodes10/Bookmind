@@ -4,15 +4,16 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
-import { ClerkProvider, Show, SignInButton, SignUpButton, UserButton } from "@clerk/nextjs";
+import { ClerkProvider, Show, SignInButton, SignUpButton, UserButton, useUser, useClerk } from "@clerk/nextjs";
 const navItems = [
   { label: "Library", href: "/" },
   { label: "Add New", href: "/books/new" },
 ];
 const Navbar = () => {
   const pathname = usePathname();
+  const { user }=useUser();
   return (
-    <header className="w-full fixed z-50 bg-('--bg-primary')">
+    <header className="w-full fixed top-0 left-0 z-50 bg-('--bg-primary')">
       <div className="wrapper navbar-height py-4 flex items-center justify-between">
         <Link href="/" className="flex gap-0.5 items-center">
           <Image
@@ -41,14 +42,24 @@ const Navbar = () => {
               </Link>
             );
           })}
-           
+           <div className="flex gap-7.5 items-center">
+
               <Show when="signed-out">
                 <SignInButton />
                 <SignUpButton />
               </Show>
+              <div className="nav-user-link">
+
               <Show when="signed-in">
                 <UserButton />
+                {user?.firstName &&(
+                  <Link href="/subscriptions" className="nav-user-name">
+                    {user.firstName}
+                  </Link>
+                )}
               </Show>  
+              </div>
+           </div>
          
         </nav>
       </div>

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, IBM_Plex_Serif, Mona_Sans } from "next/font/google";
 import { ClerkProvider, Show, SignInButton, SignUpButton, UserButton } from "@clerk/nextjs";
 import "./globals.css";
-import Navbar from "@/components/ui/Navbar";
+import Navbar from "@/components/Navbar";
 
 const ibmPlexSerif = IBM_Plex_Serif({
   variable: "--font-ibm-plex-serif",
@@ -42,14 +42,17 @@ export default function RootLayout({
         className={`${ibmPlexSerif.variable} ${monaSans.variable} relative font-sans antialiased`}
       >
         
-          <header className="flex items-center justify-between p-4 border-b">
+         
            
             <ClerkProvider>
 
            <Navbar/>
+           <main className="pt-14">
+
           {children}
+           </main>
             </ClerkProvider>
-          </header>
+          
        
       </body>
     </html>
