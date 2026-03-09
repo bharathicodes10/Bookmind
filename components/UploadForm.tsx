@@ -6,10 +6,10 @@ import * as z from "zod";
 import { Upload, Image, X, BookOpen } from "lucide-react";
 import { cn, parsePDFFile } from "@/lib/utils";
 import { useAuth } from "@clerk/nextjs";
-import { checkBookExists } from "@/lib/actions/book.action";
+import { checkBookExists, createBook } from "@/lib/actions/book.action";
 import { useRouter } from "next/navigation";
 import { upload } from "@vercel/blob/client";
-
+import type { PutBlobResult } from "@vercel/blob";
 // Validation schema with Zod
 const uploadFormSchema = z.object({
   pdfFile: z
@@ -27,9 +27,9 @@ const uploadFormSchema = z.object({
     .string()
     .min(1, "Author name is required")
     .max(100, "Author name must be 100 characters or less"),
-  voiceId: z.enum(["dave", "daniel", "chris", "rachel", "sarah"], {
-    errorMap: () => ({ message: "Please select a voice" }),
-  }),
+  voiceId: z
+  .enum(["dave", "daniel", "chris", "rachel", "sarah"] as const)
+  .refine(Boolean, { message: "Please select a voice" })
 });
 
 type UploadFormValues = z.infer<typeof uploadFormSchema>;
@@ -194,6 +194,7 @@ const UploadForm = () => {
         contentType: "application/pdf",
       });
       let coverUrl: string | undefined;
+      let uploadCoverBlob: PutBlobResult | undefined;
       if (data.coverImage) {
         const coverFile = data.coverImage;
         const uploadCoverBlob = await upload(
@@ -218,6 +219,21 @@ const UploadForm = () => {
 
         coverUrl = uploadCoverBlob.url;
       }
+
+      const result = await createBook({
+        clerkId: userId,
+        title: data.title,
+        author: data.author,
+        persona: data.voiceId,
+
+        fileURL: uploadPdfBlob.url,
+        fileBlobKey: uploadPdfBlob.pathname,
+
+        coverURL: coverUrl,
+        coverBlobKey: uploadCoverBlob?.pathname,
+
+        fileSize: pdfFile.size,
+      });console.log("create book result",result);
 
       console.log("Form submitted:", data);
       // Simulate API call
