@@ -4,7 +4,11 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Upload, Image, X, BookOpen } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn, parsePDFFile } from "@/lib/utils";
+import { useAuth } from "@clerk/nextjs";
+import { checkBookExists } from "@/lib/actions/book.action";
+import { useRouter } from "next/navigation";
+import { upload } from "@vercel/blob/client";
 
 // Validation schema with Zod
 const uploadFormSchema = z.object({
@@ -32,7 +36,11 @@ type UploadFormValues = z.infer<typeof uploadFormSchema>;
 
 const MALE_VOICES = [
   { id: "dave", name: "Dave", description: "Young male, British-Essex" },
-  { id: "daniel", name: "Daniel", description: "Middle-aged male, British-Essex" },
+  {
+    id: "daniel",
+    name: "Daniel",
+    description: "Middle-aged male, British-Essex",
+  },
   { id: "chris", name: "Chris", description: "Male, casual & easy-going" },
 ];
 
@@ -138,13 +146,15 @@ const UploadForm = () => {
   const [pdfFile, setPdfFile] = useState<File | null>(null);
   const [coverImageFile, setCoverImageFile] = useState<File | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-
+  const { userId } = useAuth();
+  const router = useRouter();
   const {
     register,
     handleSubmit,
     formState: { errors },
     watch,
     setValue,
+    reset,
   } = useForm<UploadFormValues>({
     resolver: zodResolver(uploadFormSchema),
     defaultValues: {
@@ -155,9 +165,60 @@ const UploadForm = () => {
   const selectedVoiceId = watch("voiceId");
 
   const onSubmit = async (data: UploadFormValues) => {
+    if (!userId) {
+      alert("You must be logged in to upload a book.");
+      return;
+    }
+    //Posthog event tracking
     try {
       setIsSubmitting(true);
       // TODO: Handle form submission
+      const existsCheck = await checkBookExists(data.title);
+      if (existsCheck.exists) {
+        alert(
+          "A book with this title already exists. Please choose a different title.",
+        );
+        reset();
+        router.push(`/books/${existsCheck.data.slug}`);
+      }
+      const fileTitle = data.title.replace(/\s+/g, "-").toLowerCase();
+      const pdfFile = data.pdfFile;
+      const parsedPDF = await parsePDFFile(pdfFile);
+      if (parsedPDF.content.length == 0) {
+        alert("Failed to parse PDF.Please try again with a different file.");
+        return;
+      }
+      const uploadPdfBlob = await upload(fileTitle, pdfFile, {
+        access: "public",
+        handleUploadUrl: "/api/upload",
+        contentType: "application/pdf",
+      });
+      let coverUrl: string | undefined;
+      if (data.coverImage) {
+        const coverFile = data.coverImage;
+        const uploadCoverBlob = await upload(
+          `{fileTitle}_cover.png`,
+          coverFile,
+          {
+            access: "public",
+            handleUploadUrl: "/api/upload",
+            contentType: coverFile.type,
+          },
+        );
+        coverUrl = uploadCoverBlob.url;
+      } else {
+        const response = await fetch(parsedPDF.cover);
+        const blob = await response.blob();
+
+        const uploadCoverBlob = await upload(`${fileTitle}_cover.png`, blob, {
+          access: "public",
+          handleUploadUrl: "/api/upload",
+          contentType: "image/png",
+        });
+
+        coverUrl = uploadCoverBlob.url;
+      }
+
       console.log("Form submitted:", data);
       // Simulate API call
       await new Promise((resolve) => setTimeout(resolve, 2000));
