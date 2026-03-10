@@ -6,10 +6,11 @@ import * as z from "zod";
 import { Upload, Image, X, BookOpen } from "lucide-react";
 import { cn, parsePDFFile } from "@/lib/utils";
 import { useAuth } from "@clerk/nextjs";
-import { checkBookExists, createBook } from "@/lib/actions/book.action";
+import { checkBookExists, createBook, saveBookSegments } from "@/lib/actions/book.action";
 import { useRouter } from "next/navigation";
 import { upload } from "@vercel/blob/client";
 import type { PutBlobResult } from "@vercel/blob";
+import { toast } from "sonner";
 // Validation schema with Zod
 const uploadFormSchema = z.object({
   pdfFile: z
@@ -166,7 +167,7 @@ const UploadForm = () => {
 
   const onSubmit = async (data: UploadFormValues) => {
     if (!userId) {
-      alert("You must be logged in to upload a book.");
+      toast.error("You must be logged in to upload a book.");
       return;
     }
     //Posthog event tracking
@@ -175,7 +176,7 @@ const UploadForm = () => {
       // TODO: Handle form submission
       const existsCheck = await checkBookExists(data.title);
       if (existsCheck.exists) {
-        alert(
+        toast.info(
           "A book with this title already exists. Please choose a different title.",
         );
         reset();
@@ -197,8 +198,8 @@ const UploadForm = () => {
       let uploadCoverBlob: PutBlobResult | undefined;
       if (data.coverImage) {
         const coverFile = data.coverImage;
-        const uploadCoverBlob = await upload(
-          `{fileTitle}_cover.png`,
+        uploadCoverBlob = await upload(
+          `${fileTitle}_cover.png`,
           coverFile,
           {
             access: "public",
@@ -211,7 +212,7 @@ const UploadForm = () => {
         const response = await fetch(parsedPDF.cover);
         const blob = await response.blob();
 
-        const uploadCoverBlob = await upload(`${fileTitle}_cover.png`, blob, {
+        uploadCoverBlob = await upload(`${fileTitle}_cover.png`, blob, {
           access: "public",
           handleUploadUrl: "/api/upload",
           contentType: "image/png",
@@ -220,7 +221,7 @@ const UploadForm = () => {
         coverUrl = uploadCoverBlob.url;
       }
 
-      const result = await createBook({
+      const book = await createBook({
         clerkId: userId,
         title: data.title,
         author: data.author,
@@ -233,8 +234,25 @@ const UploadForm = () => {
         coverBlobKey: uploadCoverBlob?.pathname,
 
         fileSize: pdfFile.size,
-      });console.log("create book result",result);
+      });console.log("create book result:",book);
+      if (!book.success) {
+  throw new Error("Failed to create book");
+}
 
+if (book.alreadyExists) {
+  toast.info("Book with same title already exists.");
+  reset();
+  router.push(`/books/${existsCheck.data.slug}`);
+  return;
+}
+const segments=await saveBookSegments(book.data._id,userId,parsedPDF.content)
+if(!segments.success){
+  toast.error("Failed to save book segments");
+  throw new Error("Failed to save book segments");
+}
+reset();
+// router.push(`/books/${book.data.slug}`)
+router.push(`/`)
       console.log("Form submitted:", data);
       // Simulate API call
       await new Promise((resolve) => setTimeout(resolve, 2000));

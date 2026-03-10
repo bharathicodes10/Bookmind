@@ -88,14 +88,7 @@ export const saveBookSegments = async (
         segmentsCreated: segments.length,
       },
     };
-    // const bulkOps=segments.map(segment=>({
-    //     updateOne:{
-    //         filter: { _id: segment.id },
-    //         update: { $set: { ...segment } }
-    //     }
-    // }));
-    // await BookSegment.bulkWrite(bulkOps);
-    return { success: true, data: null };
+   
   } catch (e) {
     console.error("Error saving book segments:", e);
     await BookSegment.deleteMany({ bookId });
