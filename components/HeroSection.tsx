@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { Button } from './ui/button';
+import Link from 'next/link';
 
 const HeroSection = () => {
   const steps = [
@@ -37,10 +38,11 @@ const HeroSection = () => {
                 Convert your books into interactive AI conversations. Listen, learn, and discuss your favorite reads.
               </p>
               <Button
-                className="bg-white text-gray-900 hover:bg-gray-100 border-0 rounded-lg font-semibold text-base px-6 py-3 h-auto shadow-md hover:shadow-lg transition-all duration-200 flex items-center gap-2"
+                className="w-fit bg-white text-gray-900 hover:bg-gray-100 border-0 rounded-lg font-semibold text-base px-6 py-3 h-auto shadow-md hover:shadow-lg transition-all duration-200 flex items-center gap-2 cursor-pointer" asChild
               >
-                <span className="text-xl">+</span>
-                Add new book
+                <Link className="text-xl" href="/books/new">
+                + Add a new book
+                </Link>
               </Button>
             </div>
 

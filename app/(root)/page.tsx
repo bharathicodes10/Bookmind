@@ -1,15 +1,21 @@
 import BookCard from "@/components/BookCard";
 import HeroSection from "@/components/HeroSection";
-import { sampleBooks } from "@/lib/constants";
+import { getAllBooks } from "@/lib/actions/book.action";
 
-export default function Page() {
+
+const Page = async ({ searchParams }: { searchParams: Promise<{ query?: string }> }) => {
+    const { query } = await searchParams;
+
+    const bookResults = await getAllBooks(query)
+    //empty array in case uploaded book is undefined
+    const books = bookResults.success ? bookResults.data ?? [] : []
   return (
     <main className="min-h-screen bg-('--bg-primary')">
       <HeroSection />
       <section className="max-w-7xl mx-auto px-6 py-12">
        
           <div className="library-books-grid">
-            {sampleBooks.map((book) => (
+            {books.map((book) => (
               <BookCard
                 key={book._id}
                 title={book.title}
@@ -24,3 +30,4 @@ export default function Page() {
     </main>
   );
 }
+export default Page
