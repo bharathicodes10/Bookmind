@@ -155,7 +155,12 @@ export function useVapi(book: IBook) {
 
     startTimeRef.current = null;
 }, []);
-
+const isActive =
+  status === 'starting' ||
+  status === 'listening' ||
+  status === 'thinking' ||
+  status === 'speaking';
+    
     return {
         status,
         messages,
