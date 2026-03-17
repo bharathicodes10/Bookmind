@@ -56,7 +56,7 @@ const Navbar = () => {
               <SignInButton />
               <SignUpButton />
             </Show>
-            <div className="nav-user-link">
+            <div className="nav-user-link cursor-pointer">
               <Show when="signed-in">
                 <UserButton />
                 {user?.firstName && (
