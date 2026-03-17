@@ -30,7 +30,7 @@ const Navbar = () => {
             width={42}
             height={26}
           />
-          <span className="logo-text">BookMinds AI</span>
+          <span className="logo-text">BookMeetsAI</span>
         </Link>
         <nav className="w-fit flex gap-7.5 items-center">
           {navItems.map((item) => {

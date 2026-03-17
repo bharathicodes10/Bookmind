@@ -30,7 +30,7 @@ const monaSans = Mona_Sans({
 // });
 
 export const metadata: Metadata = {
-  title: "BookMinds AI",
+  title: "BookMeetsAI",
   description: "If Books Could Talk, We Listen. Your AI-Powered Book Companion.",
   icons:{
     icon:'/icon.png'
