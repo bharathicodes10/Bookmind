@@ -11,7 +11,10 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import Transcript from "./Transcript";
 
+
+
 const VapiControls = ({ book }: { book: IBook }) => {
+  
   const {
     status,
     isActive,
@@ -21,7 +24,6 @@ const VapiControls = ({ book }: { book: IBook }) => {
     duration,
     start,
     stop,
-    clearError,
     limitError,
   } = useVapi(book);
   const router = useRouter();

@@ -160,10 +160,10 @@ const isActive =
   status === 'listening' ||
   status === 'thinking' ||
   status === 'speaking';
-    
     return {
         status,
         messages,
+        isActive,
         currentMessage,
         currentUserMessage,
         duration,
