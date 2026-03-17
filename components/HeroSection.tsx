@@ -34,7 +34,7 @@ const HeroSection = () => {
             {/* Left Section */}
             <div className="flex-1 z-10">
               <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4 font-serif">
-                BookMinds AI
+                BookMeetsAI
               </h1>
               <p className="text-base sm:text-lg text-gray-900 mb-8 leading-relaxed max-w-md">
                Upload a book. Have a real conversation with the book.
