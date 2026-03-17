@@ -25,12 +25,12 @@ const Navbar = () => {
       <div className="wrapper navbar-height py-4 flex items-center justify-between">
         <Link href="/" className="flex gap-0.5 items-center">
           <Image
-            src="/assets/logo.png"
+            src="/assets/navicon.png"
             alt="BookMind Logo"
             width={42}
             height={26}
           />
-          <span className="logo-text">BookMind</span>
+          <span className="logo-text">BookMinds AI</span>
         </Link>
         <nav className="w-fit flex gap-7.5 items-center">
           {navItems.map((item) => {
@@ -56,11 +56,11 @@ const Navbar = () => {
               <SignInButton />
               <SignUpButton />
             </Show>
-            <div className="nav-user-link cursor-pointer">
+            <div className="nav-user-link">
               <Show when="signed-in">
                 <UserButton />
                 {user?.firstName && (
-                  <Link href="/subscriptions" className="nav-user-name">
+                  <Link href="/subscriptions" className="nav-user-name cursor-pointer">
                     {user.firstName}
                   </Link>
                 )}

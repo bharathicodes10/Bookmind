@@ -30,8 +30,11 @@ const monaSans = Mona_Sans({
 // });
 
 export const metadata: Metadata = {
-  title: "BookMind",
+  title: "BookMinds AI",
   description: "If Books Could Talk, We Listen. Your AI-Powered Book Companion.",
+  icons:{
+    icon:'/icon.png'
+  }
 };
 
 export default function RootLayout({

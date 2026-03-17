@@ -113,7 +113,7 @@ const FileUploadField: React.FC<FileUploadFieldProps> = ({
             onChange={handleChange}
             className="hidden"
           />
-          <div className="upload-dropzone-icon">{icon}</div>
+          <div className="upload-dropzone-icon text-blue-400">{icon}</div>
           <p className="upload-dropzone-text">Click to upload PDF</p>
           <p className="upload-dropzone-hint">{hint}</p>
         </label>
@@ -264,7 +264,7 @@ router.push(`/`)
   };
 
   return (
-    <div className="new-book-wrapper">
+    <div className="min-h-screen bg-transparent p-6 rounded-md">
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
         {/* PDF File Upload */}
         <FileUploadField
@@ -363,7 +363,7 @@ router.push(`/`)
                         : "voice-selector-option-default"
                     } cursor-pointer`}
                   >
-                    <BookOpen size={24} className="text-[#8B7355]" />
+                    <BookOpen size={24} className="text-[#55688b]" />
                     <div className="text-center">
                       <p className="font-semibold text-[#212a3b]">
                         {voice.name}
@@ -383,7 +383,7 @@ router.push(`/`)
             <p className="text-sm font-medium text-[#3d485e] mb-3">
               Female Voices
             </p>
-            <div className="voice-selector-options">
+            <div className="voice-selector-options no-scrollbar">
               {FEMALE_VOICES.map((voice) => (
                 <label key={voice.id} className="flex-1">
                   <input
@@ -393,13 +393,13 @@ router.push(`/`)
                     className="hidden"
                   />
                   <div
-                    className={`voice-selector-option ${
+                    className={`flex items-center justify-center gap-3 p-4 border rounded-xl min-w-27.5 flex-shrink-0 ${
                       selectedVoiceId === voice.id
                         ? "voice-selector-option-selected"
                         : "voice-selector-option-default"
                     } cursor-pointer`}
                   >
-                    <BookOpen size={24} className="text-[#8B7355]" />
+                    <BookOpen size={24} className="text-[#55668b]" />
                     <div className="text-center">
                       <p className="font-semibold text-[#212a3b]">
                         {voice.name}
@@ -435,7 +435,7 @@ router.push(`/`)
           <div className="loading-shadow-wrapper bg-white">
             <div className="loading-shadow">
               <div className="loading-animation">
-                <BookOpen size={48} className="text-[#663820]" />
+                <BookOpen size={48} className="text-[#2f2066]" />
               </div>
               <div className="loading-title">Creating Your Audiobook</div>
               <div className="loading-progress">

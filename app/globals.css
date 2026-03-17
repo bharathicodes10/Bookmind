@@ -51,9 +51,9 @@
   --radius: 0.625rem;
 
   /* Warm Literary Backgrounds */
-  --bg-primary: #f8f4e9;
-  --bg-secondary: #f3e4c7;
-  --bg-tertiary: #fff6e5;
+  --bg-primary: #cbedf3;
+  --bg-secondary: #bbc8ea;
+  --bg-tertiary: #c0d0f1;
   --bg-card: #ffffff;
 
   /* Warm Text Colors */
@@ -64,7 +64,7 @@
   /* Warm Accent */
   --accent-warm: #212a3b;
   --accent-warm-hover: #3d485e;
-  --accent-light: #fff6e5;
+  --accent-light: #e0f2f9;
 
   /* Semantic Colors */
   --success: #7c9a82;
@@ -82,7 +82,7 @@
   --shadow-book: 0px 10px 30px 0px rgba(0, 0, 0, 0.1);
 
   /* Base theme colors */
-  --background: #f8f4e9;
+  --background: #e9f0f8;
   --foreground: #212a3b;
   --card: #ffffff;
   --card-foreground: #212a3b;
@@ -109,7 +109,7 @@
   --sidebar-foreground: #212a3b;
   --sidebar-primary: #212a3b;
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #f3e4c7;
+  --sidebar-accent: rgb(171, 228, 244);
   --sidebar-accent-foreground: #212a3b;
   --sidebar-border: rgba(33, 42, 59, 0.12);
   --sidebar-ring: #212a3b;
@@ -118,8 +118,8 @@
   --blue: #212a3b;
 
   /* Brand accent (warm brown) - for active states and CTAs */
-  --color-brand: #663820;
-  --color-brand-hover: #7a4528;
+  --color-brand: #5467f5;
+  --color-brand-hover: #38287a;
 
   /* Layout dimensions */
   --navbar-height: 74px;
@@ -127,19 +127,19 @@
 
 .dark {
   --background: #1a1918;
-  --foreground: #f7f4ee;
+  --foreground: #e0f2f9;
   --card: #252321;
-  --card-foreground: #f7f4ee;
+  --card-foreground: #e0f2f9;
   --popover: #252321;
-  --popover-foreground: #f7f4ee;
-  --primary: #f7f4ee;
+  --popover-foreground: #e0f2f9;
+  --primary: #e0f2f9;
   --primary-foreground: #1a1918;
   --secondary: #2d2a26;
-  --secondary-foreground: #f7f4ee;
+  --secondary-foreground: #e0f2f9;
   --muted: #2d2a26;
   --muted-foreground: #8a847a;
   --accent: #2d2a26;
-  --accent-foreground: #f7f4ee;
+  --accent-foreground: #e0f2f9;
   --destructive: oklch(0.704 0.191 22.216);
   --border: rgba(247, 244, 238, 0.1);
   --input: rgba(247, 244, 238, 0.15);
@@ -150,16 +150,16 @@
   --chart-4: oklch(0.627 0.265 303.9);
   --chart-5: oklch(0.645 0.246 16.439);
   --sidebar: #252321;
-  --sidebar-foreground: #f7f4ee;
+  --sidebar-foreground: #e0f2f9;
   --sidebar-primary: #c8553d;
-  --sidebar-primary-foreground: #f7f4ee;
+  --sidebar-primary-foreground: #e0f2f9;
   --sidebar-accent: #2d2a26;
-  --sidebar-accent-foreground: #f7f4ee;
+  --sidebar-accent-foreground: #e0f2f9;
   --sidebar-border: rgba(247, 244, 238, 0.1);
   --sidebar-ring: #c8553d;
 
   /* Brand color - terracotta */
-  --blue: #c8553d;
+  --blue: #4e90e8;
 }
 
 @layer base {
@@ -205,14 +205,14 @@
   .new-book {
     @apply max-w-7xl px-5 mx-auto w-full space-y-6 py-18 min-h-screen;
   }
-  .new-book-wrapper {
-    @apply mx-auto max-w-2xl space-y-6 mt-12 mb-20;
-  }
+ .new-book-wrapper {
+  @apply mx-auto max-w-2xl space-y-6 mt-12 mb-20 bg-white rounded-2xl p-6 shadow-lg;
+}
   .file-upload-shadow {
     @apply relative z-20 flex flex-col justify-center items-center p-7;
   }
   .form-btn {
-    @apply !w-full h-14 rounded-[10px] bg-[#663820] cursor-pointer hover:bg-[#7a4528] text-xl text-white font-bold transition-colors;
+    @apply !w-full h-14 rounded-[10px] bg-[#0c4560] cursor-pointer hover:bg-[#525fb8] text-xl text-white font-bold transition-colors;
     font-family: 'IBM Plex Serif', serif;
   }
   .loading-wrapper {
@@ -616,8 +616,15 @@
   /* ===========================================
      VOICE SELECTOR COMPONENT
      =========================================== */
+     .no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
   .voice-selector-options {
-    @apply flex gap-4;
+    @apply flex gap-4 overflow-x-auto pb-2;
   }
   .voice-selector-option {
     @apply flex-1 flex items-center justify-center gap-3 p-4 border border-[var(--border-subtle)] rounded-lg cursor-pointer transition-all;
@@ -690,20 +697,20 @@
     }
   }
   .upload-dropzone-uploaded {
-    @apply bg-[#f3e4c7];
+    @apply bg-[#96cceb];
 
     .upload-dropzone-text {
-      @apply text-[#663820];
+      @apply text-[#252066];
     }
     .upload-dropzone-hint {
-      @apply text-[#8B7355];
+      @apply text-[#55788b];
     }
   }
   .upload-dropzone-icon {
-    @apply w-[48px] h-[48px] mb-2 text-[#8B7355];
+    @apply w-[48px] h-[48px] mb-2 text-[#78cbec];
   }
   .upload-dropzone-text {
-    @apply text-[#777] text-lg font-medium text-center;
+    @apply text-[#72717a] text-lg font-medium text-center;
   }
   .upload-dropzone-hint {
     @apply text-[#777] text-sm mt-1;
