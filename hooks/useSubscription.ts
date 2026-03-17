@@ -17,7 +17,7 @@ export const useSubscription = () => {
         };
     }
 
-    let plan: PlanType = PLANS.FREE;
+    const plan: PlanType = PLANS.FREE;
 
     // 1. First Check: Clerk's `has` helper from useAuth
 

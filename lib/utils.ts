@@ -114,7 +114,7 @@ export async function parsePDFFile(file: File) {
 
     const canvas = document.createElement('canvas');
     canvas.width = viewport.width;
-    canvas.height = viewport.height;
+    canvas.height = viewport.height; 
     const context = canvas.getContext('2d');
 
     if (!context) {
@@ -123,7 +123,9 @@ export async function parsePDFFile(file: File) {
 
     await firstPage.render({
       canvasContext: context,
+      canvas:canvas,
       viewport: viewport,
+     
     }).promise;
 
     // Convert canvas to data URL
