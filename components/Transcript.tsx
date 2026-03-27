@@ -3,6 +3,10 @@
 import { useEffect, useRef } from "react";
 import { Mic } from "lucide-react";
 import { Messages } from "@/types";
+import { toast } from "sonner";
+import { Copy } from 'lucide-react';
+
+
 
 interface TranscriptProps {
   messages: Messages[];
@@ -24,6 +28,12 @@ const Transcript = ({
         behavior: "smooth",
       });
     }
+  };
+
+  //copy message
+  const copyMessage = (text: string) => {
+    navigator.clipboard.writeText(text);
+    toast.success("Copied!");
   };
 
   useEffect(() => {
@@ -76,7 +86,17 @@ const Transcript = ({
                 : "transcript-bubble-assistant"
             }`}
           >
-            {message.content}
+            <div className="flex items-start justify-between gap-2">
+              <span>{message.content}</span>
+
+              <button
+                onClick={() => copyMessage(message.content)}
+                className="text-[5px] opacity-30 hover:opacity-100 shrink-0 cursor-pointer"
+                title="Copy"
+              >
+                <Copy />
+              </button>
+            </div>
           </div>
           <span
             className={`text-[11px] mt-1 opacity-60 ${
