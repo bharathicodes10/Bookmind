@@ -575,11 +575,11 @@
       background: transparent;
     }
     &::-webkit-scrollbar-thumb {
-      background: #d4c4a8;
+      background: #7ccbfc !important;
       border-radius: 3px;
     }
     &::-webkit-scrollbar-thumb:hover {
-      background: #c4b498;
+      background: #7ccbfc;
     }
   }
   .transcript-message {
@@ -666,7 +666,7 @@
     @apply group-hover:-translate-y-1;
   }
   .book-card-spine {
-    @apply absolute -left-1 top-2 bottom-2 w-3 bg-gradient-to-r from-[#8B7355] to-[#A08060] rounded-l-md z-0;
+    @apply absolute -left-1 top-2 bottom-2 w-3 bg-gradient-to-r from-[#6e93d7] to-[#607aa0] rounded-l-md z-0;
   }
   .book-card-cover-wrapper {
     @apply relative bg-white rounded-[14px] overflow-hidden flex items-center justify-center h-[205px] md:h-[240px];

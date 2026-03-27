@@ -84,6 +84,7 @@ export interface BookCardProps {
 export interface Messages {
     role: string;
     content: string;
+    timestamp:number;
 }
 
 export interface ShadowBoxProps {

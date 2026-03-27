@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { useEffect, useRef } from 'react';
-import { Mic } from 'lucide-react';
-import { Messages } from '@/types';
+import { useEffect, useRef } from "react";
+import { Mic } from "lucide-react";
+import { Messages } from "@/types";
 
 interface TranscriptProps {
   messages: Messages[];
@@ -10,14 +10,18 @@ interface TranscriptProps {
   currentUserMessage: string;
 }
 
-const Transcript = ({ messages, currentMessage, currentUserMessage }: TranscriptProps) => {
+const Transcript = ({
+  messages,
+  currentMessage,
+  currentUserMessage,
+}: TranscriptProps) => {
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
     if (scrollRef.current) {
       scrollRef.current.scrollTo({
         top: scrollRef.current.scrollHeight,
-        behavior: 'smooth',
+        behavior: "smooth",
       });
     }
   };
@@ -26,13 +30,24 @@ const Transcript = ({ messages, currentMessage, currentUserMessage }: Transcript
     scrollToBottom();
   }, [messages, currentMessage, currentUserMessage]);
 
-  const isEmpty = messages.length === 0 && !currentMessage && !currentUserMessage;
+  const formatTime = (timestamp: number) => {
+    const date = new Date(timestamp);
+    return date.toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+  };
+
+  const isEmpty =
+    messages.length === 0 && !currentMessage && !currentUserMessage;
 
   if (isEmpty) {
     return (
       <div className="transcript-empty">
         <Mic className="size-12 text-[#212a3b] mb-4" />
-        <h2 className="transcript-empty-text"><b>No conversation yet</b></h2>
+        <h2 className="transcript-empty-text">
+          <b>No conversation yet</b>
+        </h2>
         <p className="transcript-empty-hint">
           Click the mic button above to start talking
         </p>
@@ -41,21 +56,35 @@ const Transcript = ({ messages, currentMessage, currentUserMessage }: Transcript
   }
 
   return (
-    <div ref={scrollRef} className="transcript-messages overflow-y-auto pr-2 flex-1">
+    <div
+      ref={scrollRef}
+      className="transcript-messages overflow-y-auto pr-2 flex-1"
+    >
       {messages.map((message, index) => (
         <div
           key={index}
-          className={`transcript-message ${
-            message.role === 'user' ? 'transcript-message-user' : 'transcript-message-assistant'
+          className={`flex items-center gap-2 transcript-message ${
+            message.role === "user"
+              ? "transcript-message-user"
+              : "transcript-message-assistant"
           }`}
         >
           <div
             className={`transcript-bubble ${
-              message.role === 'user' ? 'transcript-bubble-user' : 'transcript-bubble-assistant'
+              message.role === "user"
+                ? "transcript-bubble-user"
+                : "transcript-bubble-assistant"
             }`}
           >
             {message.content}
           </div>
+          <span
+            className={`text-[11px] mt-1 opacity-60 ${
+              message.role === "user" ? "text-right block" : "text-left block"
+            }`}
+          >
+            {formatTime(message.timestamp)}
+          </span>
         </div>
       ))}
 
