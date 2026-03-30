@@ -42,6 +42,45 @@ export function useVapi(book: IBook) {
 
   const voice = book.persona || DEFAULT_VOICE;
 
+  //db save
+  const saveMessageToDB = async (message: Messages) => {
+  if (!userId || !book?._id) return;
+
+  try {
+    await fetch("/api/chat/save", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userId,
+        bookId: book._id,
+        message,
+      }),
+    });
+  } catch (error) {
+    console.error("SAVE MESSAGE ERROR:", error);
+  }
+};
+
+const fetchChatHistory = async () => {
+  if (!userId || !book?._id) return;
+
+  try {
+    const res = await fetch(
+      `/api/chat/get?userId=${userId}&bookId=${book._id}`
+    );
+
+    const data = await res.json();
+
+    if (data.messages) {
+      setMessages(data.messages);
+    }
+  } catch (error) {
+    console.error("FETCH CHAT HISTORY ERROR:", error);
+  }
+};
+
   // ✅ INIT VAPI ONLY ONCE
   useEffect(() => {
     if (!vapiRef.current) {
@@ -51,6 +90,11 @@ export function useVapi(book: IBook) {
       vapiRef.current = new Vapi(VAPI_API_KEY);
     }
   }, []);
+
+  // ✅ LOAD OLD CHAT HISTORY
+useEffect(() => {
+  fetchChatHistory();
+}, [userId, book?._id]);
 
   // ✅ EVENT LISTENERS
   useEffect(() => {
@@ -98,28 +142,52 @@ export function useVapi(book: IBook) {
         setStatus("listening");
       },
 
-      message: (message: any) => {
-        if (message.type !== "transcript") return;
+      message: async (message: any) => {
+  if (message.type !== "transcript") return;
 
-        if (message.transcriptType === "final") {
-          setMessages((prev) => {
-            const isDupe = prev.some(
-              (m) =>
-                m.role === message.role && m.content === message.transcript,
-            );
-            return isDupe
-              ? prev
-              : [
-                  ...prev,
-                  {
-                    role: message.role,
-                    content: message.transcript,
-                    timestamp: Date.now(),
-                  },
-                ];
-          });
-        }
-      },
+  if (message.transcriptType === "final") {
+    const newMessage = {
+      role: message.role,
+      content: message.transcript,
+      timestamp: Date.now(),
+    };
+
+    setMessages((prev) => {
+      const isDupe = prev.some(
+        (m) =>
+          m.role === message.role && m.content === message.transcript,
+      );
+
+      if (isDupe) return prev;
+
+      return [...prev, newMessage];
+    });
+
+    await saveMessageToDB(newMessage);
+  }
+},
+      // message: (message: any) => {
+      //   if (message.type !== "transcript") return;
+
+      //   if (message.transcriptType === "final") {
+      //     setMessages((prev) => {
+      //       const isDupe = prev.some(
+      //         (m) =>
+      //           m.role === message.role && m.content === message.transcript,
+      //       );
+      //       return isDupe
+      //         ? prev
+      //         : [
+      //             ...prev,
+      //             {
+      //               role: message.role,
+      //               content: message.transcript,
+      //               timestamp: Date.now(),
+      //             },
+      //           ];
+      //     });
+      //   }
+      // },
 
       error: (err: any) => {
         console.error(err);
