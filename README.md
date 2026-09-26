@@ -9,15 +9,22 @@ BookMeetsAI allows readers to interact with literature through voice conversatio
 
 🛠️ Tech Stack & Architecture
 Frontend & Framework: Next.js (App Router), React, TypeScript
+
 Styling: Tailwind CSS, Lucide Icons
+
 Voice & Real-Time Audio: Vapi Web SDK, Daily.co WebRTC signaling
+
 Backend & Database: Node.js API routes, MongoDB (persistent chat and session history)
+
 Deployment: Vercel
 
 ✨ Key Features
 🎙️ Real-Time Voice Interaction: Low-latency WebRTC bidirectional voice conversations powered by Vapi.
+
 💬 Live Synchronized Transcripts: Dynamic rendering of caller and AI speech with real-time UI state feedback.
+
 📖 Literary Knowledge Context: Tailored prompts and context personas grounded in specific book plots and themes.
+
 ⚡ Responsive Modern UI: Interactive status badges, conversation timers, and smooth responsive design across desktop and mobile.
 
 🚀 Getting Started
