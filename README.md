@@ -5,9 +5,11 @@
 🔗 **Live Application:** [bookmeetsai.vercel.app](https://bookmeetsai.vercel.app)
 
 🌟 Overview
+
 BookMeetsAI allows readers to interact with literature through voice conversations. By simulating character perspectives and thematic analysis (e.g., Agatha Christie classics, Sherlock Holmes), users can discuss plot lines, test their comprehension, and experience books dynamically through real-time audio interaction.
 
 🛠️ Tech Stack & Architecture
+
 Frontend & Framework: Next.js (App Router), React, TypeScript
 
 Styling: Tailwind CSS, Lucide Icons
@@ -19,6 +21,7 @@ Backend & Database: Node.js API routes, MongoDB (persistent chat and session his
 Deployment: Vercel
 
 ✨ Key Features
+
 🎙️ Real-Time Voice Interaction: Low-latency WebRTC bidirectional voice conversations powered by Vapi.
 
 💬 Live Synchronized Transcripts: Dynamic rendering of caller and AI speech with real-time UI state feedback.
@@ -28,6 +31,7 @@ Deployment: Vercel
 ⚡ Responsive Modern UI: Interactive status badges, conversation timers, and smooth responsive design across desktop and mobile.
 
 🚀 Getting Started
+
 Clone the repository:
 ```bash
 git clone https://github.com/bharathicodes10/Bookmind.git
