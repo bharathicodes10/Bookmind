@@ -84,6 +84,7 @@ const VapiControls = ({ book }: { book: IBook }) => {
                 <div className="absolute inset-0 rounded-full bg-white animate-ping opacity-75" />
               )}
               <button
+              
                 onClick={() => {
                   console.log("CLICK STATUS:", status);
 
@@ -122,6 +123,12 @@ const VapiControls = ({ book }: { book: IBook }) => {
               <div className="vapi-status-indicator">
                 <span className="vapi-status-text">
                   Voice: {book.persona || "Daniel"}
+                </span>
+              </div>
+               <div className="vapi-status-indicator">
+               
+                <span className="vapi-status-text">
+                  {isActive ? "Click mic to Stop the Conversation" : "Click mic to start a conversation"}
                 </span>
               </div>
 
